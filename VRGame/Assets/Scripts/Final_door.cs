@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Final_door : MonoBehaviour
 {
-    public Text you_win;
-
+    public Text textbox;
+    public Text textbox1;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +24,13 @@ public class Final_door : MonoBehaviour
  
         if (other.tag == "Player")
         {
-            you_win.text = "You WIN !!!";
+            textbox.text = "You WIN !!!";
+            textbox1.text = "Reloading..";
+            Invoke("restart_game", 10.0f);
         }
+    }
+
+    void restart_game() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

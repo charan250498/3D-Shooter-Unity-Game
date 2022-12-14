@@ -6,12 +6,13 @@ using UnityEngine;
 public class enemy : MonoBehaviour
 {
     public Animator animator;
-    public GameObject[] targets;
+    public GameObject[] targets = new GameObject [5];
     public GameObject player;
 
     // Enemy gun end and start points
     public GameObject end, start;
     public GameObject gun;
+    public GameObject muzzleFlash;
 
     float gunShotTime = 0.1f;
 
@@ -33,6 +34,7 @@ public class enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        try{
         if (patrolling && !isDead) {
             if (Vector3.Distance(transform.position, targets[target_index].transform.position) < 1.0f) {
                 target_index = (target_index + 1) % 4;
@@ -53,6 +55,8 @@ public class enemy : MonoBehaviour
         if ((angle_with_player < Math.Abs(detection_angle)) && !isDead && (distance_with_player < detection_distance)){
             detected_player(distance_with_player);
         }
+        } catch (Exception ex) {
+        }
     }
 
     void detected_player(float distance_with_player){
@@ -65,7 +69,6 @@ public class enemy : MonoBehaviour
         }
         if ((distance_with_player < lethal_distance)) {
             animator.SetTrigger("lethal_distance_trigger");
-            animator.SetTrigger("fire");
 
             // Start shooting the player.
             RaycastHit hit;
@@ -75,8 +78,20 @@ public class enemy : MonoBehaviour
             }
             // Random vector makes the enemy hit the player with a 20% probability.
             if (gunShotTime <= 0) {
+                // Delay between enemy shooting at the player.
                 gunShotTime = 0.5f;
-                Vector3 randomVector = new Vector3(UnityEngine.Random.Range(0f, 0f), UnityEngine.Random.Range(-7f, 7f), UnityEngine.Random.Range(-0f, 0f));
+
+                // Player should be hit with only 20% probability.
+                Vector3 randomVector = new Vector3(UnityEngine.Random.Range(0f, 0f), UnityEngine.Random.Range(-3f, 3f), UnityEngine.Random.Range(-0f, 0f));
+
+                animator.SetTrigger("fire");
+                animator.SetTrigger("stop_fire");
+
+                // Adding muzzle Flash
+                GameObject muzzleFlashObject = Instantiate(muzzleFlash, end.transform.position, end.transform.rotation);
+                muzzleFlashObject.GetComponent<ParticleSystem>().Play();
+                Destroy(muzzleFlashObject, 1.0f);
+
                 if(Physics.Raycast(end.transform.position, ((end.transform.position - start.transform.position)+randomVector).normalized, out hit, 100.0f, layerMask)) {
                     Debug.Log("Enemy Hit player");
                     player.GetComponent<Gun>().Being_shot();

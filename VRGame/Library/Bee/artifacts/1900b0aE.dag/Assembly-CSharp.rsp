@@ -404,6 +404,7 @@
 "Assets/Oculus/VR/Scripts/Util/OVRScreenFade.cs"
 "Assets/Oculus/VR/Scripts/Util/OVRTrackedRemote.cs"
 "Assets/Oculus/VR/Scripts/Util/OVRWaitCursor.cs"
+"Assets/Scripts/ammo_crate.cs"
 "Assets/Scripts/CharacterMovement.cs"
 "Assets/Scripts/enemy.cs"
 "Assets/Scripts/Final_door.cs"

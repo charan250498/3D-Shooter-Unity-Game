@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class Gun : MonoBehaviour {
@@ -39,6 +40,8 @@ public class Gun : MonoBehaviour {
     public GameObject muzzleFlash;
     public GameObject shotSound;
 
+    public Text textbox;
+    public Text textbox1;
     // Use this for initialization
     void Start() {
         headMesh.GetComponent<SkinnedMeshRenderer>().enabled = false; // Hiding player character head to avoid bugs :)
@@ -104,7 +107,6 @@ public class Gun : MonoBehaviour {
     public void Being_shot() // getting hit from enemy
     {
         // The enemy shot the player. Reduce the player health by 20%.
-        Debug.Log("Player being shot at");
         if (isDead == false){
             health = health - 20.0f;
             // Show updated health in UI health bar.
@@ -114,11 +116,12 @@ public class Gun : MonoBehaviour {
         Debug.Log(health);
         if (health <= 0.0f){
             isDead = true;
-            Debug.Log("Player Dead");
             animator.SetBool("dead",true);
             player.GetComponent<CharacterMovement>().isDead = true;
+            textbox.text = "Dead";
+            textbox1.text = "Reloading..";
+            Invoke("restart_game", 10.0f);
         }
-
     }
 
     public void ReloadEvent(int eventNumber) // appearing and disappearing the handMag and gunMag
@@ -161,8 +164,8 @@ public class Gun : MonoBehaviour {
         }
         if(Physics.Raycast(end.transform.position, (end.transform.position - start.transform.position).normalized, out raycastHit, 100.0f, enemy_layer_mask)) {
             // Enemy health must reduce if he is hit.
-            Debug.Log("You hit the enemy");
             raycastHit.collider.gameObject.GetComponent<enemy>().Being_shot();
+            Debug.Log(raycastHit.transform.tag);
         }
 
         // Adding muzzle flash
@@ -172,6 +175,15 @@ public class Gun : MonoBehaviour {
 
         // Adding shoot sound
         Destroy((GameObject) Instantiate(shotSound, transform.position, transform.rotation), 1.0f);
+    }
+
+    public void refill_ammo() {
+        magBulletsVal = 30;
+        remainingBulletsVal = 90;
+    }
+
+    void restart_game() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     void addEffects() // Adding muzzle flash, shoot sound and bullet hole on the wall
