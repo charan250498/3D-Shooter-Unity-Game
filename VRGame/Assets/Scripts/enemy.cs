@@ -112,7 +112,6 @@ public class enemy : MonoBehaviour
 
             // Detach the gun from the enemy.
             gun.transform.parent = null;
-            //gun.transform.rotation = Quaternion.;
         }
     }
 }
