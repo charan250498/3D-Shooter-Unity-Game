@@ -24,6 +24,7 @@ public class Gun : MonoBehaviour {
     public float health = 100;
     public bool isDead;
     public health_bar_script health_bar;
+    public Text health_value_ui;
 
     public Text magBullets;
     public Text remainingBullets;
@@ -108,6 +109,7 @@ public class Gun : MonoBehaviour {
             health = health - 20.0f;
             // Show updated health in UI health bar.
             health_bar.GetComponent<health_bar_script>().SetHealth(health);
+            health_value_ui.text = health.ToString();
         }
         Debug.Log(health);
         if (health <= 0.0f){
