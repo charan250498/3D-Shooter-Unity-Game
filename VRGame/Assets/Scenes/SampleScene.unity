@@ -2690,6 +2690,12 @@ Transform:
   m_Father: {fileID: 1770364406}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &967872263 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100046, guid: bb17bb05ddca39941ae82f6297532e62,
+    type: 3}
+  m_PrefabInstance: {fileID: 2032231287}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &989956991
 GameObject:
   m_ObjectHideFlags: 0
@@ -3139,6 +3145,7 @@ MonoBehaviour:
   player: {fileID: 0}
   end: {fileID: 0}
   start: {fileID: 0}
+  gun: {fileID: 0}
   health: 100
   isDead: 0
 --- !u!1 &1129398840
@@ -4068,6 +4075,7 @@ MonoBehaviour:
   player: {fileID: 8296172667830012321}
   end: {fileID: 1610191105}
   start: {fileID: 197597350}
+  gun: {fileID: 967872263}
   health: 100
   isDead: 0
 --- !u!54 &1493087146

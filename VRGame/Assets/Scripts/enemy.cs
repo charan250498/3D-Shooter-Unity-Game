@@ -11,28 +11,29 @@ public class enemy : MonoBehaviour
 
     // Enemy gun end and start points
     public GameObject end, start;
+    public GameObject gun;
 
     float gunShotTime = 0.1f;
 
     int target_index = 0;
-    int patrolling = 1;
+    bool patrolling = true;
     float detection_angle = 30.0f;
     float lethal_distance = 4.0f;
     float detection_distance = 12.0f;
+    bool player_detected = false;
 
     public float health = 100.0f;
     public bool isDead = false;
     // Start is called before the first frame update
     void Start()
     {
-        //animator.SetTrigger("die");
         transform.rotation = Quaternion.LookRotation(targets[0].transform.position - transform.position);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (patrolling == 1 && !isDead) {
+        if (patrolling && !isDead) {
             if (Vector3.Distance(transform.position, targets[target_index].transform.position) < 1.0f) {
                 target_index = (target_index + 1) % 4;
                 Debug.Log("*******************************************************************************************************************");
@@ -50,16 +51,18 @@ public class enemy : MonoBehaviour
         float distance_with_player = Vector3.Distance(player.transform.position, transform.position);
         //Debug.Log(angle_with_player);
         if ((angle_with_player < Math.Abs(detection_angle)) && !isDead && (distance_with_player < detection_distance)){
-            patrolling = 0;
             detected_player(distance_with_player);
         }
     }
 
     void detected_player(float distance_with_player){
-        patrolling = 0;
         transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position);
         animator.SetTrigger("player_detected");
         animator.SetTrigger("stop_fire");
+        if (!player_detected) {
+            patrolling = false;
+            player_detected = true;
+        }
         if ((distance_with_player < lethal_distance)) {
             animator.SetTrigger("lethal_distance_trigger");
             animator.SetTrigger("fire");
@@ -93,12 +96,23 @@ public class enemy : MonoBehaviour
         // The player shot the enemy. Reduce the enemy health by 20%.
         if (isDead == false){
             health = health - 20.0f;
+
+            if (!player_detected) {
+                // Detect player if he shoots the enemy.
+                float distance_with_player = Vector3.Distance(player.transform.position, transform.position);
+                detected_player(distance_with_player);
+            }
         }
         Debug.Log(health);
         if ((health <= 0.0f) && !isDead){
             isDead = true;
             Debug.Log("Enemy Dead");
+            // Run death animation.
             animator.SetTrigger("die");
+
+            // Detach the gun from the enemy.
+            gun.transform.parent = null;
+            //gun.transform.rotation = Quaternion.;
         }
     }
 }
