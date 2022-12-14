@@ -68,7 +68,7 @@ public class Gun : MonoBehaviour {
             addEffects(); // Should be completed
 
             animator.SetBool("fire", true);
-            gunShotTime = 0.5f;
+            gunShotTime = 0.2f;
             
             // Instantiating the muzzle prefab and shot sound
             
