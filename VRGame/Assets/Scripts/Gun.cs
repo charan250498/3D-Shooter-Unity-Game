@@ -20,9 +20,10 @@ public class Gun : MonoBehaviour {
     float gunShotTime = 0.1f;
     float gunReloadTime = 1.0f;
     Quaternion previousRotation;
+
     public float health = 100;
     public bool isDead;
- 
+    public health_bar_script health_bar;
 
     public Text magBullets;
     public Text remainingBullets;
@@ -40,6 +41,9 @@ public class Gun : MonoBehaviour {
     // Use this for initialization
     void Start() {
         headMesh.GetComponent<SkinnedMeshRenderer>().enabled = false; // Hiding player character head to avoid bugs :)
+
+        //Set Initial health bar to 100
+        health_bar.GetComponent<health_bar_script>().SetMaxHealth(100.0f);
     }
 
     // Update is called once per frame
@@ -102,6 +106,8 @@ public class Gun : MonoBehaviour {
         Debug.Log("Player being shot at");
         if (isDead == false){
             health = health - 20.0f;
+            // Show updated health in UI health bar.
+            health_bar.GetComponent<health_bar_script>().SetHealth(health);
         }
         Debug.Log(health);
         if (health <= 0.0f){

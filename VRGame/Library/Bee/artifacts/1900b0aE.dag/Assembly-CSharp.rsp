@@ -390,6 +390,7 @@
 "Assets/Scripts/CharacterMovement.cs"
 "Assets/Scripts/enemy.cs"
 "Assets/Scripts/Gun.cs"
+"Assets/Scripts/health_bar_script.cs"
 -langversion:9.0
 
 /deterministic
