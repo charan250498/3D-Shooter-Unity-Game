@@ -76,7 +76,7 @@ public class enemy : MonoBehaviour
             // Random vector makes the enemy hit the player with a 20% probability.
             if (gunShotTime <= 0) {
                 gunShotTime = 0.5f;
-                Vector3 randomVector = new Vector3(UnityEngine.Random.Range(0f, 0f), UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-0f, 0f));
+                Vector3 randomVector = new Vector3(UnityEngine.Random.Range(0f, 0f), UnityEngine.Random.Range(-7f, 7f), UnityEngine.Random.Range(-0f, 0f));
                 if(Physics.Raycast(end.transform.position, ((end.transform.position - start.transform.position)+randomVector).normalized, out hit, 100.0f, layerMask)) {
                     Debug.Log("Enemy Hit player");
                     player.GetComponent<Gun>().Being_shot();

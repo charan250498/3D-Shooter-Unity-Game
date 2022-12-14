@@ -59,3 +59,27 @@ The following packages were updated:
   com.unity.test-framework from version 1.1.18 to 1.1.31
   com.unity.textmeshpro from version 3.0.1 to 3.0.6
   com.unity.timeline from version 1.2.6 to 1.6.4
+
+=== Tue Dec 13 19:34:25 2022
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.ads from version 2.0.8 to 3.7.5
+  com.unity.analytics from version 3.2.3 to 3.6.12
+  com.unity.collab-proxy from version 1.2.15 to 1.17.6
+  com.unity.purchasing from version 2.0.3 to 4.5.1
+  com.unity.textmeshpro from version 1.4.1 to 3.0.6
+The following packages were removed:
+  com.unity.package-manager-ui@2.0.13
+
+=== Tue Dec 13 19:34:25 2022
+
+Packages were changed.
+Update Mode: mergeDefaultDependencies
+
+The following packages were added:
+  com.unity.ads@3.7.5
+  com.unity.analytics@3.6.12
+  com.unity.purchasing@4.5.1
