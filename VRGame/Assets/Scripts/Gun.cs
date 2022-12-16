@@ -113,7 +113,7 @@ public class Gun : MonoBehaviour {
             health_bar.GetComponent<health_bar_script>().SetHealth(health);
             health_value_ui.text = health.ToString();
         }
-        Debug.Log(health);
+
         if (health <= 0.0f){
             isDead = true;
             animator.SetBool("dead",true);
@@ -154,18 +154,24 @@ public class Gun : MonoBehaviour {
     void shotDetection() // Detecting the object which player shot 
     {
         RaycastHit raycastHit;
-        int layerMask = (1<<8) | (1<<6) ; // Bullet holes are only needed for surrounding objects and not for enemies.
+        int layerMask = (1<<8) | (1<<6) | (1<<10); // Bullet holes are only needed for surrounding objects and not for enemies.
         layerMask = ~layerMask;
         int enemy_layer_mask = 1<<6;
+        int enemy_head_layer_mask = 1<<10;
         // Adding bullet holes on the wall
         if(Physics.Raycast(end.transform.position, (end.transform.position - start.transform.position).normalized, out raycastHit, 100.0f, layerMask)) {
             GameObject bulletHoleObject = Instantiate(bulletHole, raycastHit.point + raycastHit.collider.transform.up*0.01f, raycastHit.collider.transform.rotation);
             Destroy(bulletHoleObject, 2.0f);
         }
+        if(Physics.Raycast(end.transform.position, (end.transform.position - start.transform.position).normalized, out raycastHit, 100.0f, enemy_head_layer_mask)) {
+            // Enemy health must reduce if he is hit.
+            raycastHit.collider.gameObject.GetComponent<enemy>().Being_shot(100.0f);
+            Debug.Log("head shot");
+        }
         if(Physics.Raycast(end.transform.position, (end.transform.position - start.transform.position).normalized, out raycastHit, 100.0f, enemy_layer_mask)) {
             // Enemy health must reduce if he is hit.
-            raycastHit.collider.gameObject.GetComponent<enemy>().Being_shot();
-            Debug.Log(raycastHit.transform.tag);
+            raycastHit.collider.gameObject.GetComponent<enemy>().Being_shot(20.0f);
+            //Debug.Log(raycastHit.transform.tag);
         }
 
         // Adding muzzle flash

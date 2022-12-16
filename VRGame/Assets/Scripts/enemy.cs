@@ -34,12 +34,14 @@ public class enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isDead) {
+            transform.position = new Vector3(transform.position.x, -0.8f, transform.position.z);
+            return;
+        }
         try{
         if (patrolling && !isDead) {
             if (Vector3.Distance(transform.position, targets[target_index].transform.position) < 1.0f) {
                 target_index = (target_index + 1) % 4;
-                Debug.Log("*******************************************************************************************************************");
-                Debug.Log(target_index);
                 //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(targets[target_index].transform.position - transform.position), Time.deltaTime);
                 transform.rotation = Quaternion.LookRotation(targets[target_index].transform.position - transform.position);
             }
@@ -93,7 +95,6 @@ public class enemy : MonoBehaviour
                 Destroy(muzzleFlashObject, 1.0f);
 
                 if(Physics.Raycast(end.transform.position, ((end.transform.position - start.transform.position)+randomVector).normalized, out hit, 100.0f, layerMask)) {
-                    Debug.Log("Enemy Hit player");
                     player.GetComponent<Gun>().Being_shot();
                 }
                 else {
@@ -106,27 +107,28 @@ public class enemy : MonoBehaviour
         }
     }
 
-    public void Being_shot() // getting hit from enemy
+    public void Being_shot(float damage) // getting hit from enemy
     {
         // The player shot the enemy. Reduce the enemy health by 20%.
         if (isDead == false){
-            health = health - 20.0f;
+            health = health - damage;
 
-            if (!player_detected) {
+            if (!player_detected && (health > 1.0f)) {
                 // Detect player if he shoots the enemy.
                 float distance_with_player = Vector3.Distance(player.transform.position, transform.position);
                 detected_player(distance_with_player);
             }
         }
-        Debug.Log(health);
+
         if ((health <= 0.0f) && !isDead){
             isDead = true;
-            Debug.Log("Enemy Dead");
             // Run death animation.
             animator.SetTrigger("die");
 
             // Detach the gun from the enemy.
             gun.transform.parent = null;
+            gun.transform.position = new Vector3(gun.transform.position.x, 0.2f, gun.transform.position.z);
+            transform.position = new Vector3(transform.position.x, -0.8f, transform.position.z);
         }
     }
 }
